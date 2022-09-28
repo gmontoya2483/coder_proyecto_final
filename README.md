@@ -88,6 +88,8 @@ y otra con:
    ```
    npm run serve:dev-mongo-db
    ```
+  >__NOTA:__ para poder utilizar MongoDB se debe tener una instancia local corriendo en el puerto 27017,
+  > o se debe cambiar la configuración para hacer uso de Mongo Atlas
 
 - Para utilizar Contenedor __FireBase__
    ```
