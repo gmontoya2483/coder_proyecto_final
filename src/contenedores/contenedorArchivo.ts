@@ -1,6 +1,8 @@
 import fs from 'fs';
+import {ContenedorInterface} from '../interfaces/contenedor.interface';
+import {v4 as uuid} from 'uuid'
 
-export class Contenedor {
+export class ContenedorArchivo implements ContenedorInterface {
 
     private fileName: string;
 
@@ -18,7 +20,7 @@ export class Contenedor {
 
     async create (data) {
         const objs = await this.getAll();
-        let newId = objs.length === 0 ? 1 : objs[objs.length - 1].id + 1;
+        let newId = uuid();
         const newData = {...data, id: newId};
         objs.push(newData);
         await this.save(objs);
@@ -27,18 +29,18 @@ export class Contenedor {
 
     async update(data) {
         const objs = await this.getAll();
-        const itemIndex = objs.findIndex(obj => +obj.id === data.id);
+        const itemIndex = objs.findIndex(obj => obj.id === data.id);
         if (itemIndex === -1) {
             return itemIndex
         }
-        objs[itemIndex] = data;
+        objs[itemIndex] = {...data};
         await this.save(objs);
         return objs[itemIndex];
     }
 
     async getById(id) {
         const objs = await this.getAll();
-        return objs.find(obj => obj.id == id) || null;
+        return objs.find(obj => obj.id == id);
     }
 
     async getAll() {
@@ -52,6 +54,7 @@ export class Contenedor {
 
 
     async deleteById(id) {
+
         const objs = await this.getAll();
         const newObjs = objs.filter(obj => obj.id != id);
         if(objs.length === newObjs.length) {
@@ -59,11 +62,6 @@ export class Contenedor {
         }
         await this.save(newObjs);
         return id;
-    }
-
-    async deleteAll() {
-        await this.save([]);
-        return true;
     }
 
 

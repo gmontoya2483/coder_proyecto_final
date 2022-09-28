@@ -1,5 +1,22 @@
 # Proyecto Final
 
+## Segunda entrega
+
+### Consigna
+
+Basándose en los contenedores ya desarrollados (memoria, archivos) desarrollar dos contenedores más (que cumplan con la misma interfaz) que permitan realizar las operaciones básicas de CRUD en MongoDb (ya sea local o remoto) y en Firebase. Luego, para cada contenedor, crear dos clases derivadas, una para trabajar con Productos, y otra para trabajar con Carritos.
+
+### Aspectos a incluir en el entregable:
+
+a) A las clases derivadas de los contenedores se las conoce como DAOs (Data Access Objects), y pueden ir todas incluidas en una misma carpeta de ‘daos’.
+
+b) En la carpeta de daos, incluir un archivo que importe todas las clases y exporte una instancia de dao de productos y una de dao de carritos, según corresponda. Esta decisión se tomará en base al valor de una variable de entorno cargada al momento de ejecutar el servidor (opcional: investigar el uso de imports dinámicos).
+
+c) Incluir un archivo de configuración (config) que contenga los datos correspondientes para conectarse a las bases de datos o medio de persistencia que corresponda.
+
+### Opcional
+d) Hacer lo mismo para bases de datos relacionales: MariaDB/SQLite3.
+
 ## Primera entrega
 
 ### Consigna
@@ -41,6 +58,7 @@ Ejemplo: ```{ error : -1, descripcion: ruta 'x' método 'y' no autorizada }```
 4. La estructura de programación será ECMAScript, separada tres en módulos básicos (router, lógica de negocio/api y persistencia ). Más adelante implementaremos el desarrollo en capas. Utilizar preferentemente clases, constructores de variables let y const y arrow function.
 5. Realizar la prueba de funcionalidad completa en el ámbito local (puerto 8080) y en glitch.com
 
+
 ## Desarrollo
 
 >__NOTA:__ para simular el acceso como usuario común o administrador se definió la siguiente constante:  
@@ -59,10 +77,22 @@ npm install -g nodemon
 ```
 npm run start:dev
 ```
-y 
-```
-npm run serve:dev
-```
+y otra con:
+
+ - Para utilizar Contenedor __Archivo__
+   ```
+   npm run serve:dev-archivo
+   ```
+
+- Para utilizar Contenedor __MongoDb__
+   ```
+   npm run serve:dev-mongo-db
+   ```
+
+- Para utilizar Contenedor __FireBase__
+   ```
+   npm run serve:dev-firebase
+   ```
 
 ## Build y producción
 
@@ -70,7 +100,7 @@ npm run serve:dev
 ```
 npm run build
 ```
-2) Ejecutar el siguiente comando para ejecutar en modo produccion:
+2) Ejecutar el siguiente comando para ejecutar en modo producción:
 ```
 npm start
 ```
