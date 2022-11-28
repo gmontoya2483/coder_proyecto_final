@@ -1,8 +1,5 @@
 import { Router } from 'express';
 import { isAdminMiddleware } from '../middlewares/is-admin.middleware';
-// import {ProductosDaoArchivo as ProductosDao} from '../daos';
-// import {ProductosDaoMongo as ProductosDao} from '../daos';
-// import {ProductosDaoFireBase as ProductosDao} from '../daos';
 import { ProductosDao } from '../daos';
 export const routerProducts: Router = Router();
 

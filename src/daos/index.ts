@@ -1,10 +1,10 @@
-import ProductosDaoArchivo from './productos/ProductosDaoArchivo';
+import {config} from '../utils/config';
 
 let ProductosDao
 let CarritosDao
 
 (async ()=> {
-    switch (process.env.CONTENEDOR) {
+    switch (config.server.container) {
         case 'archivo':
             const { default: ProductosDaoArchivo }  = await import('./productos/ProductosDaoArchivo');
             const {default: CarritosDaoArchivo}  = await import('./carritos/CarritosDaoArchivo');
@@ -23,7 +23,6 @@ let CarritosDao
             ProductosDao = ProductosDaoFirebase
             CarritosDao = CarritosDaoFirebase
             break;
-
     }
 })();
 

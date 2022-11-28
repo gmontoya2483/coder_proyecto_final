@@ -1,6 +1,7 @@
 import fs from 'fs';
 import {ContenedorInterface} from '../interfaces/contenedor.interface';
 import {v4 as uuid} from 'uuid'
+import {logger} from '../utils/logger'
 
 export class ContenedorArchivo implements ContenedorInterface {
 
@@ -8,12 +9,14 @@ export class ContenedorArchivo implements ContenedorInterface {
 
     constructor(fileName) {
         this.fileName = fileName;
+        logger.info(`connected to ${this.fileName}`);
     }
 
     async save(objs) {
         try {
             await fs.promises.writeFile(this.fileName, JSON.stringify(objs,null,2), 'utf-8');
         } catch (error: any) {
+            logger.error(error);
             throw new Error(error);
         }
     }
@@ -48,6 +51,7 @@ export class ContenedorArchivo implements ContenedorInterface {
             const objs = await fs.promises.readFile(this.fileName, 'utf-8');
             return JSON.parse(objs);
         } catch (error) {
+            logger.error(error);
             return [];
         }
     }

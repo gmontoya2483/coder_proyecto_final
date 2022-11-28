@@ -1,6 +1,7 @@
 import {ContenedorInterface} from '../interfaces/contenedor.interface';
 import admin from 'firebase-admin';
 import serviceAccount from '../service-account.json';
+import {logger} from '../utils/logger';
 
 const params = {
     type: serviceAccount.type,
@@ -25,6 +26,7 @@ export class ContenedorFireBase implements ContenedorInterface {
     constructor(collection: string) {
         this.collectionName = collection;
         this.collection = this.db.collection(this.collectionName)
+        logger.info(`Conectado a Firebase`)
     }
 
     async create(data): Promise<any> {
@@ -33,7 +35,7 @@ export class ContenedorFireBase implements ContenedorInterface {
             await doc.create(data);
             return {id: doc.id, ...data}
         }catch (err) {
-            console.error(`${this.collectionName}, ${ err }`);
+            logger.error(`${this.collectionName}, ${ err }`);
             throw new Error(`No se pudo crear la entidad - ${this.collectionName}`);
         }
     }
@@ -46,7 +48,7 @@ export class ContenedorFireBase implements ContenedorInterface {
             if (!entityToDelete) return null;
             return await doc.delete();
         } catch (err) {
-            console.error(`${this.collectionName}, ${ err }`);
+            logger.error(`${this.collectionName}, ${ err }`);
             throw new Error(`No se pudo borrar entidad - ${this.collectionName}`);
         }
 
@@ -66,7 +68,7 @@ export class ContenedorFireBase implements ContenedorInterface {
                 timestamp: doc.data().timestamp
             }));
         } catch (err) {
-            console.error(`${this.collectionName}, ${ err }`);
+            logger.error(`${this.collectionName}, ${ err }`);
             throw new Error(`No se pudo buscar entidades - ${this.collectionName}`);
         }
 
@@ -78,7 +80,7 @@ export class ContenedorFireBase implements ContenedorInterface {
             const response = await doc.get();
             return (response.data()) ? {...response.data(), id} : null;
         } catch (err) {
-            console.error(`${this.collectionName}, ${ err }`);
+            logger.error(`${this.collectionName}, ${ err }`);
             throw new Error(`No se pudo buscar entidad - ${this.collectionName}`);
         }
     }
@@ -92,7 +94,7 @@ export class ContenedorFireBase implements ContenedorInterface {
             await doc.update(obj);
             return {...entityToUpdate, ...obj, id};
         } catch (err) {
-            console.error(`${this.collectionName}, ${ err }`);
+            logger.error(`${this.collectionName}, ${ err }`);
             throw new Error(`No se pudo modificar entidad - ${this.collectionName}`);
         }
     }

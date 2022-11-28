@@ -1,15 +1,16 @@
 import {ContenedorInterface} from '../interfaces/contenedor.interface';
 import mongoose, { Model } from 'mongoose';
 import {config} from '../utils/config';
+import {logger} from '../utils/logger';
 
 
-const strConn = `mongodb://${config.mongoDB.host}:${config.mongoDB.port}/${config.mongoDB.dbName}`
+const strConn = `${config.mongoDB.protocol}://${config.mongoDB.url}/${config.mongoDB.dbName}`
 mongoose.connect(strConn, config.mongoDB.options)
     .then(()=>{
-        console.log('Base de datos conectada!');
+        logger.info('Base de datos conectada!');
     })
     .catch((err) => {
-        console.error('No se pudo conectar a la base de datos', err)
+        logger.error('No se pudo conectar a la base de datos', err)
     })
 
 export class ContenedorMongo<T> implements ContenedorInterface {
@@ -19,7 +20,7 @@ export class ContenedorMongo<T> implements ContenedorInterface {
         try {
             return  await this.entityModel.create(data);
         } catch (err) {
-            console.error(`${this.entityModel.modelName}, ${ err }`);
+            logger.error(`${this.entityModel.modelName}, ${ err }`);
             throw new Error(`No se pudo crear la entidad - ${this.entityModel.modelName}`);
         }
     }
@@ -29,7 +30,7 @@ export class ContenedorMongo<T> implements ContenedorInterface {
         try {
             return await this.entityModel.findByIdAndDelete(id);
         } catch (err) {
-            console.error(`${this.entityModel.modelName}, ${ err }`);
+            logger.error(`${this.entityModel.modelName}, ${ err }`);
             throw new Error(`No se pudo eliminar entidad - ${this.entityModel.modelName}`);
         }
     }
@@ -38,7 +39,7 @@ export class ContenedorMongo<T> implements ContenedorInterface {
         try {
             return  await this.entityModel.find();
         } catch (err) {
-            console.error(`${this.entityModel.modelName}, ${ err }`);
+            logger.error(`${this.entityModel.modelName}, ${ err }`);
             throw new Error(`No se pudo buscar entidades - ${this.entityModel.modelName}`);
         }
 
@@ -48,7 +49,7 @@ export class ContenedorMongo<T> implements ContenedorInterface {
         try {
             return  await this.entityModel.findById(id);
         } catch (err) {
-            console.error(`${this.entityModel.modelName}, ${ err }`);
+            logger.error(`${this.entityModel.modelName}, ${ err }`);
             throw new Error(`No se pudo buscar entidad - ${this.entityModel.modelName}`);
         }
     }
@@ -58,7 +59,7 @@ export class ContenedorMongo<T> implements ContenedorInterface {
         try {
             return await this.entityModel.findByIdAndUpdate(id, obj, {new: true});
         } catch (err) {
-            console.error(`${this.entityModel.modelName}, ${ err }`);
+            logger.error(`${this.entityModel.modelName}, ${ err }`);
             throw new Error(`No se pudo modificar entidad - ${this.entityModel.modelName}`);
         }
     }
