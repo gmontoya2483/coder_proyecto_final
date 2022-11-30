@@ -2,9 +2,10 @@ import {ContenedorInterface} from '../interfaces/contenedor.interface';
 import mongoose, { Model } from 'mongoose';
 import {config} from '../utils/config';
 import {logger} from '../utils/logger';
+import {generateMongoDbURL} from '../utils/generateMongoDbURL';
 
 
-const strConn = `${config.mongoDB.protocol}://${config.mongoDB.url}/${config.mongoDB.dbName}`
+const strConn = generateMongoDbURL();
 mongoose.connect(strConn, config.mongoDB.options)
     .then(()=>{
         logger.info('Base de datos conectada!');

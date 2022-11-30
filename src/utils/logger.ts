@@ -1,5 +1,5 @@
 import log4js from 'log4js';
-import { config } from './config.js';
+import { config } from './config';
 
 log4js.configure({
     appenders: {
