@@ -19,6 +19,7 @@ jobs:
           MONGO_DB_PROTOCOL: ${{secrets.MONGO_DB_PROTOCOL}}
           MONGO_DB_URL: ${{secrets.MONGO_DB_URL}}
           MONGO_DB_NAME: ${{secrets.MONGO_DB_NAME}}
+          MONGO_SECRET_KEY: ${{secrets.MONGO_SECRET_KEY}}
           CONTAINER: ${{secrets.CONTAINER}}
           MODE: ${{secrets.MODE}}
           EMAIL_ACCOUNT: ${{secrets.EMAIL_ACCOUNT}}
