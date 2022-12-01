@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "nombre": "Escuadra 20cm",
+    "descripcion": "Escuadra de 20 cms",
+    "codigo": "ART-007",
+    "foto": "https://cdn3.iconfinder.com/data/icons/education-209/64/calculator-math-tool-school-256.png",
+    "precio": 145.87,
+    "stock": 16,
+    "timestamp": 1669600051961,
+    "id": "cb5743cd-3c42-4a0d-bafa-73e4cbd15dc3"
+  }
+]

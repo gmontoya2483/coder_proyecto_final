@@ -1,0 +1,39 @@
+{{> saludo }}
+<div class="container">
+    <h2>Carrito <pre>{{carrito._id}}</pre></h2>
+    <br>
+    <a href="/" class="btn btn-secondary mb-3" role="button">Productos</a>
+
+    <div class="alert alert-warning mt-3">
+        <div class="row">
+            <div class="col-8">
+                <h4>IMPORTANTE</h4>
+                <p> Actualmente para realizar algunas operaciones con el carrito se debe utiliza la API:</p>
+
+                <h6>Agregar Productos</h6>
+                <pre>
+                    [POST] /api/carrito/{{carrito._id}}/productos
+                    {
+                        "id_producto": "xxxxxxxxx"
+                    }
+                </pre>
+
+                <h6>Eliminar Producto</h6>
+                <pre>
+                    [DELETE] /api/carrito/{{carrito._id}}/productos/:productId
+                </pre>
+
+                <h6>Eliminar Carrito</h6>
+                <pre>
+                    [DELETE] /api/carrito/{{carrito._id}}
+                </pre>
+            </div>
+        </div>
+    </div>
+
+    {{> table-products }}
+
+    {{#if products}}
+        <a href="/carrito/submit" class="btn btn-primary mb-3" role="button">Hacer pedido</a>
+    {{/if}}
+</div>
