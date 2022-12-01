@@ -10,7 +10,7 @@ export const config = {
         protocol: process.env.MONGO_DB_PROTOCOL,
         url: process.env.MONGO_DB_URL,
         dbName: process.env.MONGO_DB_NAME,
-        secret_key: process.env.MONGO_SECRET_KEY,
+        secret_key: process.env.MONGO_SECRET_KEY || '123',
         options: {
             useNewUrlParser: true,
             useUnifiedTopology: true,
