@@ -16,16 +16,16 @@ jobs:
           heroku_app_name: "ecommerce-gmo"
           heroku_email: "gabi.montoya@gmail.com"
         env:
-          MONGO_DB_PROTOCOL: ${{secrets.MONGO_DB_PROTOCOL}}
-          MONGO_DB_URL: ${{secrets.MONGO_DB_URL}}
-          MONGO_DB_NAME: ${{secrets.MONGO_DB_NAME}}
-          MONGO_SECRET_KEY: ${{secrets.MONGO_SECRET_KEY}}
-          CONTAINER: ${{secrets.CONTAINER}}
-          MODE: ${{secrets.MODE}}
-          EMAIL_ACCOUNT: ${{secrets.EMAIL_ACCOUNT}}
-          EMAIL_ACCOUNT_PASSWORD: ${{secrets.EMAIL_ACCOUNT_PASSWORD}}
-          ADMINISTRATOR_EMAIL: ${{secrets.ADMINISTRATOR_EMAIL}}
-          NODE_ENV: production
-          TWILIO_ACCOUNT_SID: ${{secrets.TWILIO_ACCOUNT_SID}}
-          TWILIO_AUTH_TOKEN: ${{secrets.TWILIO_AUTH_TOKEN}}
-          ADMINISTRATOR_PHONE: ${{secrets.ADMINISTRATOR_PHONE}}
+          HD_MONGO_DB_PROTOCOL: ${{secrets.MONGO_DB_PROTOCOL}}
+          HD_MONGO_DB_URL: ${{secrets.MONGO_DB_URL}}
+          HD_MONGO_DB_NAME: ${{secrets.MONGO_DB_NAME}}
+          HD_MONGO_SECRET_KEY: ${{secrets.MONGO_SECRET_KEY}}
+          HD_CONTAINER: ${{secrets.CONTAINER}}
+          HD_MODE: ${{secrets.MODE}}
+          HD_EMAIL_ACCOUNT: ${{secrets.EMAIL_ACCOUNT}}
+          HD_EMAIL_ACCOUNT_PASSWORD: ${{secrets.EMAIL_ACCOUNT_PASSWORD}}
+          HD_ADMINISTRATOR_EMAIL: ${{secrets.ADMINISTRATOR_EMAIL}}
+          HD_NODE_ENV: production
+          HD_TWILIO_ACCOUNT_SID: ${{secrets.TWILIO_ACCOUNT_SID}}
+          HD_TWILIO_AUTH_TOKEN: ${{secrets.TWILIO_AUTH_TOKEN}}
+          HD_ADMINISTRATOR_PHONE: ${{secrets.ADMINISTRATOR_PHONE}}
