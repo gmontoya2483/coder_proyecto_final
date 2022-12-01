@@ -1,4 +1,4 @@
-name: Deploy to Heroku
+pname: Deploy to Heroku
 on:
   workflow_dispatch:
     branches:
@@ -24,7 +24,7 @@ jobs:
           EMAIL_ACCOUNT: ${{secrets.EMAIL_ACCOUNT}}
           EMAIL_ACCOUNT_PASSWORD: ${{secrets.EMAIL_ACCOUNT_PASSWORD}}
           ADMINISTRATOR_EMAIL: ${{secrets.ADMINISTRATOR_EMAIL}}
-          NODE_ENV: production
+          NODE_ENV: development
           TWILIO_ACCOUNT_SID: ${{secrets.TWILIO_ACCOUNT_SID}}
           TWILIO_AUTH_TOKEN: ${{secrets.TWILIO_AUTH_TOKEN}}
           ADMINISTRATOR_PHONE: ${{secrets.ADMINISTRATOR_PHONE}}
