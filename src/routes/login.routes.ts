@@ -18,7 +18,6 @@ passport.use(new LocalStrategy(
     async function(username, password, done) {
         logger.debug(`${ username } ${ password }`);
         //Logica para validar si un usuario existe
-
         const contenedor = new UsuariosDao();
 
         const existeUsuario = await contenedor.getByEmail(username);
@@ -52,4 +51,4 @@ routerLogin.get('/error', (req, res) => {
     return res.render('login-error')
 });
 
-routerLogin.post('/', passport.authenticate('local',  {successRedirect: '/api/productos', failureRedirect: '/login/error'} ));
+routerLogin.post('/', passport.authenticate('local',  {successRedirect: '/', failureRedirect: '/login/error'} ));

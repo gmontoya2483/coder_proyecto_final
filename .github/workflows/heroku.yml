@@ -1,0 +1,30 @@
+name: Deploy to Heroku
+on:
+  workflow_dispatch:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3
+      - name: Deploy to heroku
+        uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "ecommerce-gmo"
+          heroku_email: "gabi.montoya@gmail.com"
+        env:
+          MONGO_DB_PROTOCOL: ${{secrets.MONGO_DB_PROTOCOL}}
+          MONGO_DB_URL: ${{secrets.MONGO_DB_URL}}
+          MONGO_DB_NAME: ${{secrets.MONGO_DB_NAME}}
+          CONTAINER: ${{secrets.CONTAINER}}
+          MODE: ${{secrets.MODE}}
+          EMAIL_ACCOUNT: ${{secrets.EMAIL_ACCOUNT}}
+          EMAIL_ACCOUNT_PASSWORD: ${{secrets.EMAIL_ACCOUNT_PASSWORD}}
+          ADMINISTRATOR_EMAIL: ${{secrets.ADMINISTRATOR_EMAIL}}
+          NODE_ENV: production
+          TWILIO_ACCOUNT_SID: ${{TWILIO_ACCOUNT_SID}}
+          TWILIO_AUTH_TOKEN: ${{secrets.TWILIO_AUTH_TOKEN}}
+          ADMINISTRATOR_PHONE: ${{secrets.ADMINISTRATOR_PHONE}}

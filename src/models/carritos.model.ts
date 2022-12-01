@@ -1,6 +1,7 @@
 import {Schema, model} from 'mongoose';
 
 export interface ICarrito {
+    email: string,
     productos: [
         {
             nombre: string;
@@ -16,6 +17,7 @@ export interface ICarrito {
 }
 
 const CarritoSchema = new Schema<ICarrito>({
+    email: {type: String, required: true},
     timestamp: {type: Date, default: Date.now()},
     productos: [{
         nombre: {type: String, required: true},

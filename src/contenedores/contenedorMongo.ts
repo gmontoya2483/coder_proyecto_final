@@ -38,7 +38,9 @@ export class ContenedorMongo<T> implements ContenedorInterface {
 
     async getAll(): Promise<any[]> {
         try {
-            return  await this.entityModel.find();
+            const resultData =   await this.entityModel.find();
+            // @ts-ignore
+            return resultData.map((item) => item.toJSON());
         } catch (err) {
             logger.error(`${this.entityModel.modelName}, ${ err }`);
             throw new Error(`No se pudo buscar entidades - ${this.entityModel.modelName}`);

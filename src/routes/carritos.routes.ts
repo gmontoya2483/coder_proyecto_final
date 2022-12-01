@@ -1,76 +1,98 @@
 import { Router } from 'express';
-import { notFoundMessage as productNotFoundMessage } from './productos.routes'
-import {CarritosDao} from '../daos';
-import {ProductosDao} from '../daos';
+import {logger} from '../utils/logger';
+import {CarritosService} from '../services/carritos.service';
+import {Whatsapp} from '../utils/whatsapp';
+import {config} from '../utils/config';
+import {Mailer} from '../utils/mailer';
+
 
 export const routerCarrito: Router = Router();
 
-routerCarrito.post('/', [], async (req, res) => {
-    const contenedor = new CarritosDao();
-    const carrito = await contenedor.create({ 'timestamp': Date.now(), 'productos': [] });
-    return res.status(201).json(carrito);
+
+routerCarrito.get('/', [],async (req, res) => {
+
+    const carritosService = new CarritosService();
+
+    const user:any = await req.user;
+    const username = user.fullName;
+    const email = user.email;
+
+    let carritoResult = await carritosService.searchCarritoByEmail(email);
+
+    if(carritoResult.success && !carritoResult.carrito)
+        carritoResult = await carritosService.nuevoCarrito(email);
+
+    if(!carritoResult.success)
+        return res.redirect('/');
+
+
+    const carrito = carritoResult.carrito.toJSON()
+
+
+    return res.render('carrito', {
+        carrito,
+        products: carrito.productos,
+        username
+    });
+
 });
 
-routerCarrito.delete('/:id',[], async (req, res) => {
-    const contenedor = new CarritosDao();
-    const id = req.params.id;
-    const deletedId = await contenedor.deleteById(id);
-    return (deletedId === -1 || deletedId === null)
-        ? res.status(404).json(notFoundMessage(id))
-        : res.json({'mensaje': `Carrito con id: '${ id }' fue eliminado`});
-});
+routerCarrito.get('/submit', [],async (req, res) => {
+    const carritosService = new CarritosService();
 
-routerCarrito.get('/:id/productos', [],async (req, res) => {
-    const contenedor = new CarritosDao();
-    const id = req.params.id;
-    const carrito = await contenedor.getById(id);
-    if (!carrito) return res.status(404).json(notFoundMessage(id));
-    return res.json(carrito.productos);
-});
+    const user:any = await req.user;
+    const username = user.fullName;
+    const email = user.email;
+
+    const submitCarritoResult = await carritosService.submitCarritoByEmail(email)
+    if (!submitCarritoResult.success)
+        return res.render('/carrito-error', {username});
+
+    logger.debug({submitCarritoResult});
+
+    // Enviar Whatsapp
+    const whatsapp = new Whatsapp();
+    whatsapp.setWhatsappMessage({
+        from: 'whatsapp:+14155238886',
+        body: `El usuario ${username} ha realizado un pedido`,
+        to: `whatsapp:${config.twilio.administratorPhone}`
+    });
+    const whatsappMessageResponse = await whatsapp.sendMessage();
+    logger.debug(whatsappMessageResponse);
+
+    // Enviar email
+    const mailer = new Mailer();
 
 
-routerCarrito.post('/:id/productos', [], async (req, res) => {
-    const contenedorCarrito = new CarritosDao();
-    const contenedorProductos = new ProductosDao();
 
-    const id_carrito = req.params.id;
-    const { id_producto } = req.body;
+    mailer.setEmailContent({
+        from: 'Ecommerce app <noreply@example.com>',
+        to: `"Administrador !!" ${config.email.administratorEmail}`,
+        subject: `Nuevo pedido de: ${user.fullName}`,
+        text: `El usuario ${user.fullName} realizo un pedido.`,
+        html: `
+            <html>
+                <body>
+                    <p>El usuario ${user.fullName} ha realizado un pedido.</p>
+                    <ol>
+                        ${itemList(submitCarritoResult.deletedCarrito.productos)}
+                    </ol>
+                </body>
+            </html>
+        `,
+    });
 
-     const carrito = await contenedorCarrito.getById(id_carrito);
-      if (!carrito) return res.status(404).json(notFoundMessage(id_carrito));
+    const sendEmailResponse = await mailer.sendEmail();
+    logger.debug(sendEmailResponse);
 
-      if(carrito.productos.find(producto => producto.id === id_producto))
-          return res.status(400).json({'mensaje': `El carrito ya tiene el producto con el id: '${id_producto}'`});
+    return res.render('carrito-confirmation', {username});
 
-     const producto = await contenedorProductos.getById(id_producto);
-     if (!producto)
-         return res.status(404).json(productNotFoundMessage(id_producto));
 
-     carrito.productos?.push(producto);
-
-     await contenedorCarrito.update(carrito);
-     return res.status(201).json(carrito);
-});
-
-routerCarrito.delete('/:id/productos/:id_prod', [], async (req, res) => {
-    const contenedor = new CarritosDao();
-    const id_carrito = req.params.id;
-    const id_prod = req.params.id_prod;
-
-    const carrito = await contenedor.getById(id_carrito);
-    if (!carrito)
-        return res.status(404).json(notFoundMessage(id_carrito));
-
-    const filteredProductos = carrito.productos?.filter(producto => producto.id.toString() !== id_prod)
-    if(carrito.productos.length === filteredProductos.length)
-        return res.status(400).json({'mensaje': `El carrito no tiene el producto con id: '${ id_prod }'`});
-
-    carrito.productos = filteredProductos;
-    await contenedor.update(carrito)
-    return res.json({'mensaje': `Se eliminó del carrito el producto con el id '${id_prod}'.`});
 });
 
 
-const notFoundMessage = (id) => {
-    return {'mensaje': `No se encontró el carrito con el id: '${id}'.`}
+const itemList = (productos)=> {
+    const htmlList = productos.map(producto => `<li>${producto.nombre}</li>`)
+    return htmlList.join('');
 }
+

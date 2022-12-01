@@ -22,5 +22,15 @@ export const config = {
         mode: process.env.MODE || 'FORK',
         port: process.env.PORT || 8080,
         environment: process.env.NODE_ENV || 'development'
+    },
+    email: {
+        emailAccount: process.env.EMAIL_ACCOUNT,
+        emailAccountPassword: process.env.EMAIL_ACCOUNT_PASSWORD,
+        administratorEmail: process.env.ADMINISTRATOR_EMAIL
+    },
+    twilio: {
+        accountSid: process.env.TWILIO_ACCOUNT_SID,
+        authToken: process.env.TWILIO_AUTH_TOKEN,
+        administratorPhone: process.env.ADMINISTRATOR_PHONE
     }
 }
